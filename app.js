@@ -8,3 +8,13 @@ var express = require('express'),
 
 //initialize an express server
 var app = express()
+
+//create connection to mysql database
+var connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'nlproject',
+  password: 'nlproject',
+  database: 'demo'
+})
+
+connection.connect();
