@@ -2,25 +2,23 @@ var express = require('express'),
   path = require('path'),
   bodyParser = require('body-parser'),
   methodOverride = require('method-override'),
-  errorHandler = require('errorhandler'),
-  uniqid = require('uniqid'),
-  mysql = require('mysql')
+  errorHandler = require('errorhandler')
+
+var users = require('./routes/users')
 
 //initialize an express server
 var app = express()
 
-//create connection to mysql database
-var connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'nlproject',
-  password: 'nlproject',
-  database: 'demo'
-})
+//Cấu hình liên quan đến express.js
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(methodOverride())
+app.use(express.static(path.join(application_root, "public")))
+app.use(errorHandler({ dumpExceptions: true, showStack: true }))
 
-connection.connect(function(err) {
-  if (err) {
-    console.error('error connecting: ' + err.stack)
-    return
-  }
-  console.log('connected as id ' + connection.threadId)
+//add routers
+app.use('/users', users)
+
+app.listen(3000, function() {
+  console.log('server is running on port 3000')
 })
