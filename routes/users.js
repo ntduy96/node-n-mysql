@@ -13,11 +13,11 @@ router.get('/', function(req, res) {
 })
 
 router.get('/:username', function(req, res) {
-  connection.query('SELECT * FROM user WHERE user.username = ?', [req.params.username], function(err, results) {
+  connection.query('SELECT * FROM user WHERE username = ?', [req.params.username], function(err, result) {
     if (err) {
       res.sendStatus(500)
     } else {
-      res.json(results)
+      res.json(result)
     }
   })
 })
@@ -30,7 +30,7 @@ router.post('/login', function(req, res) {
     var queryStr = 'SELECT * FROM user WHERE username = ? and password = ?';
     connection.query(queryStr, user, function(err, result) {
       if (err) res.sendStatus(500)
-      else if (result.length == 0) {
+      else if (result.length == 1) {
         res.sendStatus(200) //username và password trùng khớp
       } else res.sendStatus(401) //username hoặc password bị sai
     })
